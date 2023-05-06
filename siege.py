@@ -6,21 +6,7 @@ import os
 import openpyxl
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
-def fix_recognized_characters(text_list):
-    replacements = {
 
-        "Мур": 'Nvp',
-        "миту": 'MrIniy',
-
-    }
-
-    for idx, item in enumerate(text_list):
-        for key, value in replacements.items():
-            if key in item:
-                text_list[idx] = item.replace(key, value)
-                break
-
-    return text_list
 
 def extract_text_from_image(image_path, template_path):
     image = cv2.imread(image_path)
