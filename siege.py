@@ -6,6 +6,22 @@ import os
 import openpyxl
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
+def fix_recognized_characters(text_list):
+    replacements = {
+
+        "Мур": 'Nvp',
+        "миту": 'MrIniy',
+
+    }
+
+    for idx, item in enumerate(text_list):
+        for key, value in replacements.items():
+            if key in item:
+                text_list[idx] = item.replace(key, value)
+                break
+
+    return text_list
+
 def extract_text_from_image(image_path, template_path):
     image = cv2.imread(image_path)
     image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -69,7 +85,9 @@ def main():
     deaths = list(filter(None, stats[2].split('\n')))
 
     surnames = [re.sub(r'\(.*?\)', '', name).strip() for name in surnames]
-
+    print("фамилия:", surnames);
+    print("Убийства", kills);
+    print("death", deaths);
     if len(surnames) == len(kills) == len(deaths):
         stats_file = "stats.txt"
 
@@ -136,7 +154,6 @@ def main():
     txt_file = "stats.txt"
     excel_file = "stats.xlsx"
     write_data_to_excel(txt_file, excel_file)
-
 
 if __name__ == "__main__":
     main()
